@@ -16,12 +16,25 @@ targets:
     platform: iOS
     settings:
       base:
+        PRODUCT_NAME: SwiftUI-DI
+        PRODUCT_BUNDLE_IDENTIFIER: com.github.droibit.sample.${PRODUCT_NAME}
         MARKETING_VERSION: 1.0.0
         CURRENT_PROJECT_VERSION: 1
         ENABLE_PREVIEWS: true
         DEVELOPMENT_ASSET_PATHS: "\"Sources/Resources/Preview Content\""
     sources:
       - path: Sources
+      - path: Sources/DI/NeedleGenerated.swift
+        optional: true
+        createIntermediateGroups: true
+    dependencies:
+      - carthage: NeedleFoundation
+    preBuildScripts:      
+      - name: Run needle
+        path: /bin/sh
+        outputFiles:
+          - $SRCROOT/Sources/DI/NeedleGenerated.swift
+        script: export SOURCEKIT_LOGGING=0 && Carthage/Checkouts/needle/Generator/bin/needle generate Sources/DI/NeedleGenerated.swift Sources/
 
 schemes:
   SampleApp:
