@@ -9,3 +9,13 @@ import NeedleFoundation
 
 class AppComponent: BootstrapComponent {
 }
+
+// MARK: - Data
+
+extension AppComponent {
+    var repository: Repository {
+        shared {
+            RepositoryImpl()
+        }
+    }
+}
