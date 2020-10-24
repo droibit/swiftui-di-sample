@@ -5,25 +5,35 @@
 //  Created by Shinya Kumagai on 2020/10/23.
 //
 
+import RxSwift
 import Combine
 
 protocol Repository {
     
-    func getUsers() -> AnyPublisher<[User], Never>
+    func getUsers() -> Single<[User]>
     
-    func getFriends(by id: Int) -> AnyPublisher<[User], Never>
+    func getFriends(by id: Int) -> Single<[User]>
 }
 
 class RepositoryImpl: Repository {
-    func getUsers() -> AnyPublisher<[User], Never> {
-        Just(users.enumerated().map { User(id: "\($0.offset)", name: $0.element) })
-            .eraseToAnyPublisher()
+    
+    private let schedulers: SchedulerProvider
+    
+    init(schedulers: SchedulerProvider) {
+        self.schedulers = schedulers
     }
     
-    func getFriends(by id: Int) -> AnyPublisher<[User], Never> {
-        let friends = users.shuffled().prefix(Int.random(in: 1...3))
-        return Just(friends.enumerated().map { User(id: "\($0.offset)", name: $0.element) })
-            .eraseToAnyPublisher()
+    func getUsers() -> Single<[User]> {
+        Single.deferred {
+            .just(users.enumerated().map { User(id: "\($0.offset)", name: $0.element) })
+        }.subscribe(on: schedulers.background)
+    }
+    
+    func getFriends(by id: Int) -> Single<[User]> {
+        Single.deferred {
+            let friends = users.shuffled().prefix(Int.random(in: 1...3))
+            return .just(friends.enumerated().map { User(id: "\($0.offset)", name: $0.element) })
+        }.subscribe(on: schedulers.background)
     }
 }
 

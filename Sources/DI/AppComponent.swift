@@ -5,6 +5,7 @@
 //  Created by Shinya Kumagai on 2020/10/21.
 //
 
+import RxSwift
 import NeedleFoundation
 
 class AppComponent: BootstrapComponent {
@@ -15,7 +16,16 @@ class AppComponent: BootstrapComponent {
 extension AppComponent {
     var repository: Repository {
         shared {
-            RepositoryImpl()
+            RepositoryImpl(schedulers: schedulers)
+        }
+    }
+    
+    var schedulers: SchedulerProvider {
+        shared {
+            SchedulerProvider(
+                main: MainScheduler.instance,
+                background: ConcurrentDispatchQueueScheduler(qos: .userInitiated)
+            )
         }
     }
 }

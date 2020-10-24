@@ -29,6 +29,8 @@ targets:
         createIntermediateGroups: true
     dependencies:
       - carthage: NeedleFoundation
+      - carthage: RxSwift
+      - carthage: RxRelay
     preBuildScripts:      
       - name: Run needle
         path: /bin/sh
