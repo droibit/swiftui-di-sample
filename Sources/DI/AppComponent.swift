@@ -5,11 +5,21 @@
 //  Created by Shinya Kumagai on 2020/10/21.
 //
 
-import RxSwift
 import NeedleFoundation
+import RxSwift
+import UIKit
 
-class AppComponent: BootstrapComponent {
+class AppComponent: BootstrapComponent, ObservableObject {
 }
+
+// MARK: - Subcomponents
+
+extension AppComponent {
+    var main: MainComponent {
+        MainComponent(parent: self)
+    }
+}
+
 
 // MARK: - Data
 
