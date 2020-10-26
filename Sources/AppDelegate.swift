@@ -10,11 +10,8 @@ import UIKit
 // TODO: Really need `AppDelegate`?
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    private (set) var appComponent: AppComponent!
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerProviderFactories()
-        appComponent = AppComponent()        
         return true
     }
 }

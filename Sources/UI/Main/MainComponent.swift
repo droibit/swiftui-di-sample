@@ -27,3 +27,9 @@ class MainComponent: Component<MainDependency>, ObservableObject {
         MainContentView(viewModel: viewModel)
     }
 }
+
+extension MainComponent {
+    static func make() -> MainComponent {
+        return AppComponent.instance.main
+    }
+}

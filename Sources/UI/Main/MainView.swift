@@ -3,11 +3,11 @@ import SwiftUI
 
 struct MainView: View {
     
-    // TODO: Neeed to refactor
-    @EnvironmentObject var appComponent: AppComponent
+    @StateObject
+    private var component: MainComponent = .make()
     
     var body: some View {
-        appComponent.main.makeView()
+        component.makeView()
     }
 }
 
