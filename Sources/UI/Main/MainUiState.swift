@@ -10,4 +10,11 @@ import Foundation
 enum MainUiState {
     case inProgress(initial: Bool)
     case success(users: [User])
+    
+    var isInProgress: Bool {
+        if case .inProgress = self {
+            return true
+        }
+        return false
+    }
 }

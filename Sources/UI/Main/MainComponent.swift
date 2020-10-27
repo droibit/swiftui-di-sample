@@ -14,6 +14,11 @@ protocol MainDependency: Dependency {
 }
 
 class MainComponent: Component<MainDependency>, ObservableObject {
+    
+    deinit {
+        print("deinit: \(type(of: self))")
+    }
+    
     private var viewModel: MainViewModel {
         shared {
             MainViewModel(

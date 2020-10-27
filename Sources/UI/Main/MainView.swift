@@ -18,19 +18,22 @@ struct MainContentView: View {
     @ObservedObject var viewModel: MainViewModel
     
     var body: some View {
-        Group {
-            switch viewModel.uiState {
-            case .inProgress:
-                InProgressView()
-            case .success(let users):
-                UserListView(users: users)
+        NavigationView {
+            Group {
+                switch viewModel.uiState {
+                case .inProgress:
+                    InProgressView()
+                case .success(let users):
+                    UserListView(users: users)
+                }
             }
-        }.onAppear(perform: viewModel.onAppear)
-    }
-        
-    func userListView(with users: [User]) -> some View {
-        Text("TODO")
-            .padding()
+            .onAppear(perform: viewModel.onAppear)
+            .navigationBarTitle(Text("Main"), displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: viewModel.refresh, label: {
+                Image(systemName: "arrow.counterclockwise")
+                    .disabled(viewModel.uiState.isInProgress)
+            }))
+        }
     }
 }
 
@@ -57,13 +60,59 @@ private struct UserListView: View {
     let users: [User]
     
     var body: some View {
-        Text("TODO")
-            .padding()
+        List(users) { user in
+            UserRow(user: user)
+        }
     }
 }
 
 struct UserListView_Previews: PreviewProvider {
     static var previews: some View {
-        UserListView(users: [])
+        let users = [
+            "Random Names",
+            "Maison Kearney",
+            "Digby Gomez",
+            "Ebony Mcintyre",
+            "Mario Duffy",
+            "Farhan Roach",
+        ]
+        .enumerated().map { User(id: "\($0.offset)", name: $0.element) }
+        
+        UserListView(users: users)
     }
 }
+
+private struct UserRow: View {
+    
+    let user: User
+    
+    var body: some View {
+        HStack {
+            Text(String(user.name.prefix(1).uppercased()))
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .frame(width: 44, height: 44)
+                .background(
+                    Circle()
+                        .strokeBorder(Color.blue, lineWidth: 1)
+                        .background(
+                            Circle().fill(Color.gray)
+                        )
+                )
+
+            
+            Text(user.name)
+                .font(.title2)
+            
+            Spacer()
+        }.padding([.vertical], 8)
+    }
+}
+
+struct UserRow_Previews: PreviewProvider {
+    static var previews: some View {
+        UserRow(user: User(id: "1", name: "Tanaka Taro"))
+    }
+}
+

@@ -17,7 +17,7 @@ class MainViewModel: ObservableObject {
     private let disposeBag = DisposeBag()
     
     @Published private (set) var uiState: MainUiState
-        
+    
     init(repository: Repository,
          schedulers: SchedulerProvider,
          uiState: MainUiState = .inProgress(initial: true)
@@ -33,6 +33,19 @@ class MainViewModel: ObservableObject {
     
     func onAppear() {
         guard case .inProgress(let initial) = uiState, initial else {
+            return
+        }
+        uiState = .inProgress(initial: false)
+        
+        repository.getUsers()
+            .delay(.milliseconds(1_500), scheduler: schedulers.main)
+            .subscribe(onSuccess: { [unowned self] users in
+                self.uiState = .success(users: users)
+            }).disposed(by: disposeBag)
+    }
+    
+    func refresh() {
+        if case .inProgress = uiState {
             return
         }
         uiState = .inProgress(initial: false)
