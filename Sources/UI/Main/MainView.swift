@@ -60,9 +60,18 @@ private struct UserListView: View {
     let users: [User]
     
     var body: some View {
-        List(users) { user in
-            UserRow(user: user)
-        }
+        List {
+            Section(
+                header: Text("Users").textCase(.none),
+                footer: Text("\(users.count) users.")
+            ) {
+                ForEach(users) { user in
+                    NavigationLink(destination: /*@START_MENU_TOKEN@*/Text("Destination")/*@END_MENU_TOKEN@*/) {
+                        UserRow(user: user)
+                    }
+                }
+            }
+        }.listStyle(GroupedListStyle())
     }
 }
 
@@ -103,16 +112,16 @@ private struct UserRow: View {
 
             
             Text(user.name)
-                .font(.title2)
+                .font(.title3)
             
             Spacer()
-        }.padding([.vertical], 8)
+        }.padding([.vertical], 4)
     }
 }
 
 struct UserRow_Previews: PreviewProvider {
     static var previews: some View {
-        UserRow(user: User(id: "1", name: "Tanaka Taro"))
+        UserRow(user: User(id: "1", name: "Taro Tanaka"))
     }
 }
 
