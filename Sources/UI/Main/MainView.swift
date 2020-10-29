@@ -28,30 +28,13 @@ struct MainContentView: View {
                     UserListView(users: users)
                 }
             }
-            .onAppear(perform: viewModel.onAppear)
             .navigationBarTitle(Text("Main"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: viewModel.refresh, label: {
                 Image(systemName: "arrow.counterclockwise")
                     .disabled(viewModel.uiState.isInProgress)
             }))
+            .onAppear(perform: viewModel.onAppear)
         }
-    }
-}
-
-// MARK: - InProgressView
-
-private struct InProgressView: View {
-    var body: some View {
-        ProgressView("Loading...")
-            .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-            .foregroundColor(.black)
-            .padding()
-    }
-}
-
-struct InProgressView_Previews: PreviewProvider {
-    static var previews: some View {
-        InProgressView()
     }
 }
 
@@ -119,10 +102,3 @@ private struct UserRow: View {
         }.padding([.vertical], 4)
     }
 }
-
-struct UserRow_Previews: PreviewProvider {
-    static var previews: some View {
-        UserRow(user: User(id: "1", name: "Taro Tanaka"))
-    }
-}
-

@@ -12,7 +12,7 @@ protocol Repository {
     
     func getUsers() -> Single<[User]>
     
-    func getFriends(by id: Int) -> Single<[User]>
+    func getFriends(by id: String) -> Single<[User]>
 }
 
 class RepositoryImpl: Repository {
@@ -29,10 +29,10 @@ class RepositoryImpl: Repository {
         }.subscribe(on: schedulers.background)
     }
     
-    func getFriends(by id: Int) -> Single<[User]> {
+    func getFriends(by id: String) -> Single<[User]> {
         Single.deferred {
-            let friends = users.shuffled().prefix(Int.random(in: 1...3))
-            return .just(friends.enumerated().map { User(id: "\($0.offset)", name: $0.element) })
+            let friends = users.shuffled().prefix(Int.random(in: 2...10))
+            return .just(friends.enumerated().map { User(id: "\(id)-\($0.offset)", name: $0.element) })
         }.subscribe(on: schedulers.background)
     }
 }
