@@ -34,6 +34,10 @@ extension AppComponent {
     var main: MainComponent {
         MainComponent(parent: self)
     }
+    
+    var detail: DetailComponent {
+        DetailComponent(parent: self)
+    }
 }
 
 // MARK: - Data

@@ -15,7 +15,8 @@ struct MainView: View {
 // MARK: - Content
 
 struct MainContentView: View {
-    @ObservedObject var viewModel: MainViewModel
+    @ObservedObject
+    var viewModel: MainViewModel
     
     var body: some View {
         NavigationView {
@@ -66,7 +67,7 @@ private struct UserListView: View {
                 footer: Text("\(users.count) users.")
             ) {
                 ForEach(users) { user in
-                    NavigationLink(destination: /*@START_MENU_TOKEN@*/Text("Destination")/*@END_MENU_TOKEN@*/) {
+                    NavigationLink(destination: DetailView(user: user)) {
                         UserRow(user: user)
                     }
                 }
